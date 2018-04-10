@@ -126,7 +126,13 @@ var makeCard = function (dataCard) {
   elementCard.querySelector('.popup__text--time').textContent = 'Заезд после ' + offer.checkin + ', выезд до ' + offer.checkout;
   elementCard.querySelector('.popup__features').textContent = offer.features;
   elementCard.querySelector('.popup__description').textContent = offer.description;
-  elementCard.querySelector('.popup__photo').src = dataCard.offer.photos;
+  for (var j = 0; j < offer.photos.length; j++) {
+    var elementPhotos = elementCard.querySelector('.popup__photos');
+    var elementPhoto = elementCard.querySelector('.popup__photo').cloneNode(true);
+    elementPhoto.src = offer.photos[j];
+    elementPhotos.appendChild(elementPhoto);
+  }
+
   elementCard.querySelector('.popup__avatar').src = dataCard.author.avatar;
 
   return elementCard;
