@@ -122,12 +122,13 @@ var makeCard = function (dataCard) {
   elementCard.querySelector('.popup__text--address').textContent = offer.address;
   elementCard.querySelector('.popup__text--price ').textContent = offer.price + '₽/ночь';
   elementCard.querySelector('.popup__type').textContent = transformType(offer.type);
-  elementCard.querySelector('.popup__text--capacity').textContent = offer.rooms + ' комнаты ' + 'для ' + offer.guests + ' гостей';
+  elementCard.querySelector('.popup__text--capacity').textContent = offer.rooms + ' комнаты для ' + offer.guests + ' гостей';
   elementCard.querySelector('.popup__text--time').textContent = 'Заезд после ' + offer.checkin + ', выезд до ' + offer.checkout;
-  elementCard.querySelector('.popup__features').textContent = offer.features;
+  elementCard.querySelector('.popup__features').textContent = offer.features.join(', ');
   elementCard.querySelector('.popup__description').textContent = offer.description;
+
+  var elementPhotos = elementCard.querySelector('.popup__photos');
   for (var j = 0; j < offer.photos.length; j++) {
-    var elementPhotos = elementCard.querySelector('.popup__photos');
     var elementPhoto = elementCard.querySelector('.popup__photo').cloneNode(true);
     elementPhoto.src = offer.photos[j];
     elementPhotos.appendChild(elementPhoto);
@@ -141,7 +142,10 @@ var makeCard = function (dataCard) {
 var fragment = document.createDocumentFragment();
 for (i = 0; i < ads.length; i++) {
   fragment.appendChild(makePin(ads[i]));
-  fragment.appendChild(makeCard(ads[i]));
 }
+
+fragment.appendChild(makeCard(ads[0]));
 userDialog.appendChild(fragment);
-mapCardTemplate.appendChild(fragment);
+
+var removePhoto = document.querySelector('.popup__photo');
+removePhoto.remove();
