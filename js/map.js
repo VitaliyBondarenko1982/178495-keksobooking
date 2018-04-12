@@ -117,7 +117,7 @@ var mapCardTemplate = document.querySelector('template').content.querySelector('
 var makeCard = function (dataCard) {
   var elementCard = mapCardTemplate.cloneNode(true);
   var offer = dataCard.offer;
-
+console.log(offer);
   elementCard.querySelector('.popup__title').textContent = offer.title;
   elementCard.querySelector('.popup__text--address').textContent = offer.address;
   elementCard.querySelector('.popup__text--price ').textContent = offer.price + '₽/ночь';
@@ -128,10 +128,13 @@ var makeCard = function (dataCard) {
   elementCard.querySelector('.popup__description').textContent = offer.description;
 
   var elementPhotos = elementCard.querySelector('.popup__photos');
+var templatePhoto = elementCard.querySelector('.popup__photo');
+var elementPhoto = elementPhotos.removeChild(templatePhoto);
   for (var j = 0; j < offer.photos.length; j++) {
-    var elementPhoto = elementCard.querySelector('.popup__photo').cloneNode(true);
-    elementPhoto.src = offer.photos[j];
-    elementPhotos.appendChild(elementPhoto);
+    var currentPhoto = elementPhoto.cloneNode(true);
+    currentPhoto.src = offer.photos[j];
+    elementPhotos.appendChild(currentPhoto);
+    console.log(currentPhoto);
   }
 
   elementCard.querySelector('.popup__avatar').src = dataCard.author.avatar;
@@ -146,6 +149,3 @@ for (i = 0; i < ads.length; i++) {
 
 fragment.appendChild(makeCard(ads[0]));
 userDialog.appendChild(fragment);
-
-var removePhoto = document.querySelector('.popup__photo');
-removePhoto.remove();
