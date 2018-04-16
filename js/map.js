@@ -188,10 +188,21 @@ elementPin.addEventListener('click', function () {
   map.appendChild(fragmentCard);
 });
 
-var closeCard = document.querySelector('.popup__close');
-closeCard.addEventListener('click', function () {
-  elementCard.classList.add('hidden');
+var popup = document.querySelector('.popup');
+var popupClose = document.querySelector('.popup__close');
+
+var closeCard = function () {
+  popup.classList.add('hidden');
+};
+
+popupClose.addEventListener('click', function () {
+  closeCard();
 });
+
+
+// closeCard.addEventListener('click', function () {
+//   elementCard.classList.add('hidden');
+// });
 
 // var closeCard = document.querySelector('.popup__close');
 // var onPopupEscPress = function(evt) {
