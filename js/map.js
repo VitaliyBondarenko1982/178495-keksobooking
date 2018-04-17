@@ -144,14 +144,17 @@ var makeCard = function (dataCard) {
 };
 
 var fragmentPin = document.createDocumentFragment();
+var fragmentCard = document.createDocumentFragment();
+
 for (i = 0; i < ads.length; i++) {
   fragmentPin.appendChild(makePin(ads[i]));
-}
-
-var fragmentCard = document.createDocumentFragment();
-for (i = 0; i < ads.length; i++) {
   fragmentCard.appendChild(makeCard(ads[i]));
 }
+
+// var fragmentCard = document.createDocumentFragment();
+// for (i = 0; i < ads.length; i++) {
+//   fragmentCard.appendChild(makeCard(ads[i]));
+// }
 
 var formElement = document.querySelector('.ad-form');
 var fieldsetElements = formElement.getElementsByTagName('fieldset');
@@ -184,25 +187,33 @@ mainPin.addEventListener('mouseup', function () {
   getActivePage();
 });
 
-elementPin.addEventListener('click', function () {
+var clickPin = function () {
   map.appendChild(fragmentCard);
-});
-
-var popup = document.querySelector('.popup');
-var popupClose = document.querySelector('.popup__close');
-
-var closeCard = function () {
-  popup.classList.add('hidden');
 };
 
-popupClose.addEventListener('click', function () {
-  closeCard();
-});
+var openCard = function () {
+  elementPin.addEventListener('click', function () {
+    clickPin();
+  });
+};
 
+openCard();
 
+// var popup = document.querySelector('.popup');
+// var popupClose = document.querySelector('.popup__close');
+//
+// var closeCard = function () {
+//   popup.classList.add('hidden');
+//   document.removeEventListener('click', openCard);
+// };
+//
+// popupClose.addEventListener('click', function () {
+//   closeCard();
+// });
 // closeCard.addEventListener('click', function () {
 //   elementCard.classList.add('hidden');
 // });
+
 
 // var closeCard = document.querySelector('.popup__close');
 // var onPopupEscPress = function(evt) {
@@ -214,3 +225,85 @@ popupClose.addEventListener('click', function () {
 //   mapCardTemplate.classList.add('hidden');
 //   document.removeEventListener('keydown', onPopupEscPress);
 // };
+
+var adForm = document.querySelector('.ad-form');
+
+// // синхронизация полей "Время заезда и выезда".
+var selectTimeIn = adForm.querySelector('#timein');
+var selectTimeOut = adForm.querySelector('#timeout');
+
+var syncronizeCheckInOut = function (evt) {
+  var val = evt.target.value;
+  selectTimeIn.querySelector('option[value="' + val + '"]').selected = true;
+  selectTimeOut.querySelector('option[value="' + val + '"]').selected = true;
+};
+
+var timeInChangeHandler = function (evt) {
+  syncronizeCheckInOut(evt);
+};
+
+var timeOutChangeHandler = function (evt) {
+  syncronizeCheckInOut(evt);
+};
+
+selectTimeIn.addEventListener('change', timeInChangeHandler);
+selectTimeOut.addEventListener('change', timeOutChangeHandler);
+
+// синхронизация полей "Тип жилья" и "Цена".
+var selectType = adForm.querySelector('#type');
+var selectPrice = adForm.querySelector('#price');
+
+var changeMinPrice = function (minPrice) {
+  selectPrice.placeholder = minPrice;
+  selectPrice.min = minPrice;
+};
+
+var syncronizeTypePrice = function () {
+  if (selectType.children[0].selected) {
+    changeMinPrice('1000');
+  } else if (selectType.children[1].selected) {
+    changeMinPrice('0');
+  } else if (selectType.children[2].selected) {
+    changeMinPrice('5000');
+  } else if (selectType.children[3].selected) {
+    changeMinPrice('10000');
+  }
+};
+
+selectType.addEventListener('change', syncronizeTypePrice);
+
+// синхронизация полей "Количество комнат" и "Количество мест".
+var selectRoomNumber = adForm.querySelector('#room_number');
+var selectCapacity = adForm.querySelector('#capacity');
+
+var changeCapacityDisabled = function (disable0, disable1, disable2, disable3) {
+  selectCapacity.children[0].disabled = disable0;
+  selectCapacity.children[1].disabled = disable1;
+  selectCapacity.children[2].disabled = disable2;
+  selectCapacity.children[3].disabled = disable3;
+};
+
+var changeCapacitySelected = function (select0, select1, select2, select3) {
+  selectCapacity.children[0].selected = select0;
+  selectCapacity.children[1].selected = select1;
+  selectCapacity.children[2].selected = select1;
+  selectCapacity.children[3].selected = select3;
+};
+
+var synchronizeRoomNumberCapacity = function () {
+  if (selectRoomNumber.children[0].selected) {
+    changeCapacityDisabled(true, true, false, true);
+    changeCapacitySelected(false, false, true, false);
+  } else if (selectRoomNumber.children[1].selected) {
+    changeCapacityDisabled(true, false, false, true);
+    changeCapacitySelected(false, true, false, false);
+  } else if (selectRoomNumber.children[2].selected) {
+    changeCapacityDisabled(false, false, false, true);
+    changeCapacitySelected(true, false, false, false);
+  } else if (selectRoomNumber.children[3].selected) {
+    changeCapacityDisabled(true, true, true, false);
+    changeCapacitySelected(false, false, false, true);
+  }
+};
+
+selectRoomNumber.addEventListener('change', synchronizeRoomNumberCapacity);
