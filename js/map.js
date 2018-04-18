@@ -230,7 +230,7 @@ mainPin.addEventListener('mousedown', function (evt) {
     y: evt.clientY
   };
 
-  var onMouseMove = function (moveEvt) {
+  var mouseMoveHandler = function (moveEvt) {
     moveEvt.preventDefault();
 
     var shift = {
@@ -249,15 +249,15 @@ mainPin.addEventListener('mousedown', function (evt) {
     currentMainPinY = Math.floor(parseInt(mainPin.style.top, 10) + MAIN_PIN_SIZE / 2);
   };
 
-  var onMouseUp = function (upEvt) {
+  var mouseUpHandler = function (upEvt) {
     upEvt.preventDefault();
     getActivePage();
-    document.removeEventListener('mousemove', onMouseMove);
-    document.removeEventListener('mouseup', onMouseUp);
+    document.removeEventListener('mousemove', mouseMoveHandler);
+    document.removeEventListener('mouseup', mouseUpHandler);
   };
 
-  document.addEventListener('mousemove', onMouseMove);
-  document.addEventListener('mouseup', onMouseUp);
+  document.addEventListener('mousemove', mouseMoveHandler);
+  document.addEventListener('mouseup', mouseUpHandler);
 
 
 });
