@@ -185,8 +185,31 @@ var makeCard = function (dataCard) {
 };
 
 
-var mapPins = document.querySelector('.map__pins');
+// add disabled attribute to form fields when page is not active
 
+var adForm = document.querySelector('.ad-form');
+var fieldsetElements = adForm.getElementsByTagName('fieldset');
+var fieldsetElem;
+for (var k = 0; k < fieldsetElements.length; k++) {
+  fieldsetElem = fieldsetElements[k];
+  fieldsetElem.setAttribute('disabled', 'disabled');
+}
+
+// add disabled attribute to form fields when page is not active
+
+
+// move main pin
+
+var map = document.querySelector('.map');
+var mapPins = document.querySelector('.map__pins');
+var inputAddress = document.getElementById('address');
+var mainPin = document.querySelector('.map__pin--main');
+var currentMainPinX;
+var currentMainPinY;
+var mainPinX = Math.floor(parseInt(mainPin.style.left, 10) + MAIN_PIN_SIZE / 2);
+var mainPinY = Math.floor(parseInt(mainPin.style.top, 10) + MAIN_PIN_SIZE / 2);
+
+inputAddress.value = mainPinX + ', ' + mainPinY;
 var getActivePage = function () {
   map.classList.remove('map--faded');
   adForm.classList.remove('ad-form--disabled');
@@ -194,15 +217,52 @@ var getActivePage = function () {
     fieldsetElem = fieldsetElements[k];
     fieldsetElem.removeAttribute('disabled');
   }
-  inputAddress.value = mainPinX + ', ' + (mainPinY + MAIN_PIN_LEG);
+  inputAddress.value = currentMainPinX + ', ' + (currentMainPinY + MAIN_PIN_LEG);
   mapPins.appendChild(fragmentPin);
 };
 
 
-var mainPin = document.querySelector('.map__pin--main');
-mainPin.addEventListener('mouseup', function () {
-  getActivePage();
+mainPin.addEventListener('mousedown', function (evt) {
+  evt.preventDefault();
+
+  var startCoords = {
+    x: evt.clientX,
+    y: evt.clientY
+  };
+
+  var onMouseMove = function (moveEvt) {
+    moveEvt.preventDefault();
+
+    var shift = {
+      x: startCoords.x - moveEvt.clientX,
+      y: startCoords.y - moveEvt.clientY
+    };
+
+    startCoords = {
+      x: moveEvt.clientX,
+      y: moveEvt.clientY
+    };
+
+    mainPin.style.top = (mainPin.offsetTop - shift.y) + 'px';
+    mainPin.style.left = (mainPin.offsetLeft - shift.x) + 'px';
+    currentMainPinX = Math.floor(parseInt(mainPin.style.left, 10) + MAIN_PIN_SIZE / 2);
+    currentMainPinY = Math.floor(parseInt(mainPin.style.top, 10) + MAIN_PIN_SIZE / 2);
+  };
+
+  var onMouseUp = function (upEvt) {
+    upEvt.preventDefault();
+    getActivePage();
+    document.removeEventListener('mousemove', onMouseMove);
+    document.removeEventListener('mouseup', onMouseUp);
+  };
+
+  document.addEventListener('mousemove', onMouseMove);
+  document.addEventListener('mouseup', onMouseUp);
+
+
 });
+
+// move main pin
 
 
 // close popup
@@ -219,18 +279,3 @@ popupClose.addEventListener('click', function () {
 });
 
 // close popup
-
-
-var adForm = document.querySelector('.ad-form');
-var fieldsetElements = adForm.getElementsByTagName('fieldset');
-var fieldsetElem;
-for (var k = 0; k < fieldsetElements.length; k++) {
-  fieldsetElem = fieldsetElements[k];
-  fieldsetElem.setAttribute('disabled', 'disabled');
-}
-
-var map = document.querySelector('.map');
-var mainPinX = Math.floor(parseInt(mainPin.style.left, 10) + MAIN_PIN_SIZE / 2);
-var mainPinY = Math.floor(parseInt(mainPin.style.top, 10) + MAIN_PIN_SIZE / 2);
-var inputAddress = document.getElementById('address');
-inputAddress.value = mainPinX + ', ' + mainPinY;
