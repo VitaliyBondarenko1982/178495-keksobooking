@@ -15,6 +15,7 @@
       return randomElement;
     },
 
+    // Функция, возвращающая случайный массив из заданного массива
     getArrayFromArray: function (array, length) {
       length = length ? length : window.utils.getRandomNumber(1, array.length);
       var newArray = [];
@@ -27,6 +28,7 @@
     }
   };
 
+// Функция, добавляющая случайный елемент к новому массиву.
   var pushArray = function (array, newArray) {
     var secondComments = window.utils.getRandomElement(array);
 

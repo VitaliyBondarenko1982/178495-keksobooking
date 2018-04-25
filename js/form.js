@@ -41,7 +41,9 @@
 
   var selectType = adForm.querySelector('#type');
   var selectPrice = adForm.querySelector('#price');
-
+  selectPrice.placeholder = '0';
+  selectType.children[0].removeAttribute('selected');
+  selectType.children[1].setAttribute('selected', 'selected');
   var changeMinPrice = function (minPrice) {
     selectPrice.placeholder = minPrice;
     selectPrice.min = minPrice;
@@ -102,6 +104,7 @@
   selectRoomNumber.addEventListener('change', capacityChangeHandler);
 
   // synchronization fields "room number" and "capacity"
+
   window.adForm = adForm;
   window.fieldsetElem = fieldsetElem;
   window.fieldsetElements = fieldsetElements;
