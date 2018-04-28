@@ -25,6 +25,7 @@
     node.style.right = 20;
     node.style.fontSize = '25px';
 
+
     node.textContent = errorMessage;
     document.body.insertAdjacentElement('afterbegin', node);
   };
@@ -151,5 +152,7 @@
   });
 
   // close popup
+  
   window.fragmentPin = fragmentPin;
+
 })();

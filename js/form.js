@@ -6,6 +6,7 @@
   var adForm = document.querySelector('.ad-form');
   var fieldsetElements = adForm.getElementsByTagName('fieldset');
   var fieldsetElem;
+  
   window.getInputDisabled = function () {
     for (var k = 0; k < fieldsetElements.length; k++) {
       fieldsetElem = fieldsetElements[k];
