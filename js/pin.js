@@ -33,6 +33,7 @@
     elementPin.addEventListener('click', function () {
       pinClickHandler(dataCard);
       document.addEventListener('keydown', window.popupEnterPressHandler);
+
     });
 
     return elementPin;

@@ -9,6 +9,7 @@
     if (evt.keyCode === ESC_KEYCODE) {
       closePopup();
     }
+<<<<<<< HEAD
   };
 
   window.popupEnterPressHandler = function (evt) {
@@ -151,4 +152,5 @@
 
   // close popup
   window.fragmentPin = fragmentPin;
+
 })();
