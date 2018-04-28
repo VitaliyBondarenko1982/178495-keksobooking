@@ -1,4 +1,4 @@
-'use strict'; //form
+'use strict';
 
 (function () {
   // add disabled attribute to form fields when page is not active
@@ -17,7 +17,7 @@
 
   // add submit handler
   var success = document.querySelector('.success');
-  //var error = document.querySelector('.error');
+  // var error = document.querySelector('.error');
   var showSuccess = function () {
     success.classList.remove('hidden');
   };
@@ -160,4 +160,3 @@
   window.fieldsetElem = fieldsetElem;
   window.fieldsetElements = fieldsetElements;
 })();
-// form
