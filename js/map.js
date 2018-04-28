@@ -17,27 +17,26 @@
     }
   };
 
-  var errorHandler = function (errorMessage) {
+  var errorLoadHandler = function (errorMessage) {
     var node = document.createElement('div');
     node.style = 'z-index: 100; margin: 0 auto; text-align: center; background-color: red;';
     node.style.position = 'absolute';
-    node.style.left = 20;
-    node.style.right = 20;
-    node.style.fontSize = '25px';
-
+    node.style.left = 0;
+    node.style.right = 0;
+    node.style.fontSize = '30px';
     node.textContent = errorMessage;
     document.body.insertAdjacentElement('afterbegin', node);
   };
 
   var fragmentPin;
-  var successHandler = function () {
+  var successLoadHandler = function () {
     fragmentPin = document.createDocumentFragment();
     for (var i = 0; i < window.ads.length; i++) {
       fragmentPin.appendChild(window.makePin(window.ads[i]));
     }
   };
 
-  window.load(successHandler, errorHandler);
+  window.load(successLoadHandler, errorLoadHandler);
 
   window.mapPins = document.querySelector('.map__pins');
   var inputAddress = document.getElementById('address');

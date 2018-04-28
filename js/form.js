@@ -15,15 +15,53 @@
 
   // add disabled attribute to form fields when page is not active
 
+  // add submit handler
+  var success = document.querySelector('.success');
+  //var error = document.querySelector('.error');
+  var showSuccess = function () {
+    success.classList.remove('hidden');
+  };
+
+  var hideSuccess = function () {
+    setTimeout(function () {
+      success.classList.add('hidden');
+    }, 5000);
+  };
+
+  var formSuccessHandler = function () {
+    showSuccess();
+    window.getDeactivePage();
+    hideSuccess();
+  };
+  // var showError = function () {
+  //   error.classList.remove('hidden');
+  // };
+
+  // var hideError = function () {
+  //   setTimeout(function () {
+  //     error.classList.add('hidden');
+  //   }, 5000);
+  // };
+
+  var formErrorHandler = function (errorMessage) {
+    var node = document.createElement('div');
+    node.style = 'z-index: 100; margin: 0 auto; text-align: center; background-color: red;';
+    node.style.position = 'absolute';
+    node.style.left = 0;
+    node.style.right = 0;
+    node.style.fontSize = '30px';
+
+    node.textContent = errorMessage;
+    document.body.insertAdjacentElement('afterbegin', node);
+  };
 
   adForm.addEventListener('submit', function (evt) {
-    window.upload(new FormData(adForm), function () {
-      window.getDeactivePage();
-
-    });
+    window.upload(new FormData(adForm), formSuccessHandler, formErrorHandler);
     evt.preventDefault();
+
   });
 
+  // add submit handler
 
   // synchronization fields "timein" and "timeout"
 
