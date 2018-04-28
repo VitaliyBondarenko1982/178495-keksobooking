@@ -17,7 +17,7 @@
 
   // add submit handler
   var success = document.querySelector('.success');
-  //var error = document.querySelector('.error');
+  // var error = document.querySelector('.error');
   var showSuccess = function () {
     success.classList.remove('hidden');
   };
