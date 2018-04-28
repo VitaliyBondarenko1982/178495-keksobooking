@@ -9,7 +9,6 @@
     if (evt.keyCode === ESC_KEYCODE) {
       closePopup();
     }
-<<<<<<< HEAD
   };
 
   window.popupEnterPressHandler = function (evt) {
@@ -65,7 +64,7 @@
     window.getInputDisabled();
     form.reset();
     mainPin.style.left = mainPinPosX + 'px';
-    mainPin.style.top = pinMainPosY + 'px';
+    mainPin.style.top = mainPinPosY + 'px';
     inputAddress.value = mainPinX + ', ' + mainPinY;
     window.elementCard.classList.add('hidden');
   };
@@ -87,7 +86,7 @@
 
   var setCurrentMainPinCoord = function () {
     var currentMainPinX = Math.floor(mainPinPosX + mainPinWidth / 2);
-    var currentMainPinY = Math.floor(pinMainPosY + mainPinHeight);
+    var currentMainPinY = Math.floor(mainPinPosY + mainPinHeight);
     inputAddress.value = currentMainPinX + ', ' + (currentMainPinY + MAIN_PIN_LEG);
   };
 
