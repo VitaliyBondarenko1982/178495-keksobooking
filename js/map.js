@@ -64,7 +64,7 @@
     window.adForm.classList.add('ad-form--disabled');
     window.getInputDisabled();
     form.reset();
-    mainPin.style.left = pinMainPosX + 'px';
+    mainPin.style.left = mainPinPosX + 'px';
     mainPin.style.top = pinMainPosY + 'px';
     inputAddress.value = mainPinX + ', ' + mainPinY;
     window.elementCard.classList.add('hidden');
@@ -79,14 +79,14 @@
     return false;
   };
 
-  var pinMainPosX = mainPin.offsetLeft;
-  var pinMainPosY = mainPin.offsetTop;
-  var mainPinX = Math.floor(pinMainPosX + mainPinWidth / 2);
-  var mainPinY = Math.floor(pinMainPosY + mainPinHeight / 2);
+  var mainPinPosX = mainPin.offsetLeft;
+  var mainPinPosY = mainPin.offsetTop;
+  var mainPinX = Math.floor(mainPinPosX + mainPinWidth / 2);
+  var mainPinY = Math.floor(mainPinPosY + mainPinHeight / 2);
   inputAddress.value = mainPinX + ', ' + mainPinY;
 
   var setCurrentMainPinCoord = function () {
-    var currentMainPinX = Math.floor(pinMainPosX + mainPinWidth / 2);
+    var currentMainPinX = Math.floor(mainPinPosX + mainPinWidth / 2);
     var currentMainPinY = Math.floor(pinMainPosY + mainPinHeight);
     inputAddress.value = currentMainPinX + ', ' + (currentMainPinY + MAIN_PIN_LEG);
   };
