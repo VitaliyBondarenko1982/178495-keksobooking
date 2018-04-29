@@ -29,10 +29,10 @@
   };
 
   var fragmentPin;
-  var successLoadHandler = function () {
+  var successLoadHandler = function (data) {
     fragmentPin = document.createDocumentFragment();
-    for (var i = 0; i < window.ads.length; i++) {
-      fragmentPin.appendChild(window.makePin(window.ads[i]));
+    for (var i = 0; i < data.length; i++) {
+      fragmentPin.appendChild(window.makePin(data[i]));
     }
   };
 
@@ -67,6 +67,7 @@
     mainPin.style.top = mainPinPosY + 'px';
     inputAddress.value = mainPinX + ', ' + mainPinY;
     window.elementCard.classList.add('hidden');
+
   };
 
   // move main pin
