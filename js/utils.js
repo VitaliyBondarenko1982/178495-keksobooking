@@ -28,7 +28,8 @@
     }
   };
 
-// Функция, добавляющая случайный елемент к новому массиву.
+  // Функция, добавляющая случайный елемент к новому массиву.
+
   var pushArray = function (array, newArray) {
     var secondComments = window.utils.getRandomElement(array);
 
