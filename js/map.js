@@ -162,6 +162,7 @@
   });
 
   // close popup
+  
   window.fragmentPin = fragmentPin;
 
 })();
