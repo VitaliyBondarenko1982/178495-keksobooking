@@ -17,7 +17,6 @@
 
   // add submit handler
   var success = document.querySelector('.success');
-  // var error = document.querySelector('.error');
   var showSuccess = function () {
     success.classList.remove('hidden');
   };
@@ -33,35 +32,25 @@
     window.getDeactivePage();
     hideSuccess();
   };
-  // var showError = function () {
-  //   error.classList.remove('hidden');
-  // };
 
-  // var hideError = function () {
-  //   setTimeout(function () {
-  //     error.classList.add('hidden');
-  //   }, 5000);
-  // };
-
-  var formErrorHandler = function (errorMessage) {
-    var node = document.createElement('div');
-    node.style = 'z-index: 100; margin: 0 auto; text-align: center; background-color: red;';
-    node.style.position = 'absolute';
-    node.style.left = 0;
-    node.style.right = 0;
-    node.style.fontSize = '30px';
-
-    node.textContent = errorMessage;
-    document.body.insertAdjacentElement('afterbegin', node);
-  };
 
   adForm.addEventListener('submit', function (evt) {
-    window.upload(new FormData(adForm), formSuccessHandler, formErrorHandler);
+    window.upload(new FormData(adForm), formSuccessHandler, window.errorDataHandler);
     evt.preventDefault();
 
   });
 
   // add submit handler
+
+  // reset form handler
+
+  var resetForm = document.querySelector('.ad-form__reset');
+
+  resetForm.addEventListener('click', function () {
+    window.getDeactivePage();
+  });
+
+  // reset form handler
 
   // synchronization fields "timein" and "timeout"
 
@@ -122,33 +111,23 @@
   var selectRoomNumber = adForm.querySelector('#room_number');
   var selectCapacity = adForm.querySelector('#capacity');
 
-  var changeCapacityDisabled = function (disable0, disable1, disable2, disable3) {
-    selectCapacity.children[0].disabled = disable0;
-    selectCapacity.children[1].disabled = disable1;
-    selectCapacity.children[2].disabled = disable2;
-    selectCapacity.children[3].disabled = disable3;
-  };
-
-  var changeCapacitySelected = function (select0, select1, select2, select3) {
-    selectCapacity.children[0].selected = select0;
-    selectCapacity.children[1].selected = select1;
-    selectCapacity.children[2].selected = select1;
-    selectCapacity.children[3].selected = select3;
-  };
-
   var capacityChangeHandler = function () {
-    if (selectRoomNumber.children[0].selected) {
-      changeCapacityDisabled(true, true, false, true);
-      changeCapacitySelected(false, false, true, false);
-    } else if (selectRoomNumber.children[1].selected) {
-      changeCapacityDisabled(true, false, false, true);
-      changeCapacitySelected(false, true, false, false);
-    } else if (selectRoomNumber.children[2].selected) {
-      changeCapacityDisabled(false, false, false, true);
-      changeCapacitySelected(true, false, false, false);
-    } else if (selectRoomNumber.children[3].selected) {
-      changeCapacityDisabled(true, true, true, false);
-      changeCapacitySelected(false, false, false, true);
+    var roomNumber = parseInt(selectRoomNumber.value, 10);
+    var capacity = parseInt(selectCapacity.value, 10);
+    if (roomNumber === 1 && capacity !== 1) {
+      selectCapacity.setCustomValidity('1 комната — «для 1 гостя»');
+    } else if (roomNumber === 2 && (selectCapacity === 0 || capacity === 3)) {
+      selectCapacity.setCustomValidity(
+          '2 комнаты — «для 1 или 2 гостей'
+      );
+    } else if (roomNumber === 3 && capacity === 0) {
+      selectCapacity.setCustomValidity(
+          '3 комнаты — «для 1-го, 2-x или 3-x гостей»'
+      );
+    } else if (roomNumber === 100 && capacity !== 0) {
+      selectCapacity.setCustomValidity('100 комнат — «не для гостей»');
+    } else {
+      selectCapacity.setCustomValidity('');
     }
   };
 
@@ -156,7 +135,10 @@
 
   // synchronization fields "room number" and "capacity"
 
+
   window.adForm = adForm;
   window.fieldsetElem = fieldsetElem;
   window.fieldsetElements = fieldsetElements;
+  window.selectRoomNumber = selectRoomNumber;
+  window.selectCapacity = selectCapacity;
 })();

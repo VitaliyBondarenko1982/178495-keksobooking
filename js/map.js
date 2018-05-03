@@ -5,38 +5,22 @@
   var ENTER_KEYCODE = 13;
   var MAIN_PIN_LEG = 22;
 
-  window.popupEscPressHandler = function (evt) {
-    if (evt.keyCode === ESC_KEYCODE) {
-      closePopup();
-    }
-  };
-
-  window.popupEnterPressHandler = function (evt) {
-    if (evt.keyCode === ENTER_KEYCODE) {
-      closePopup();
-    }
-  };
-
-  var errorLoadHandler = function (errorMessage) {
-    var node = document.createElement('div');
-    node.style = 'z-index: 100; margin: 0 auto; text-align: center; background-color: red;';
-    node.style.position = 'absolute';
-    node.style.left = 0;
-    node.style.right = 0;
-    node.style.fontSize = '30px';
-    node.textContent = errorMessage;
-    document.body.insertAdjacentElement('afterbegin', node);
-  };
-
   var fragmentPin;
-  var successLoadHandler = function (data) {
+
+  window.renderPins = function () {
     fragmentPin = document.createDocumentFragment();
-    for (var i = 0; i < data.length; i++) {
-      fragmentPin.appendChild(window.makePin(data[i]));
+    for (var i = 0; i < window.ads.length; i++) {
+      fragmentPin.appendChild(window.makePin(window.ads[i]));
     }
+    window.mapPins.appendChild(fragmentPin);
   };
 
-  window.load(successLoadHandler, errorLoadHandler);
+  var successLoadHandler = function (data) {
+    window.ads = data;
+    window.renderPins(data);
+  };
+
+  // window.load(successLoadHandler, window.errorDataHandler);
 
   window.mapPins = document.querySelector('.map__pins');
   var inputAddress = document.getElementById('address');
@@ -54,20 +38,30 @@
       window.fieldsetElem = window.fieldsetElements[k];
       window.fieldsetElem.removeAttribute('disabled');
     }
-    window.mapPins.appendChild(fragmentPin);
+    window.load(successLoadHandler, window.errorDataHandler);
+    window.selectRoomNumber.children[0].selected = true;
+    window.selectCapacity.children[0].selected = false;
   };
 
   var form = document.querySelector('.notice form');
+
+
   window.getDeactivePage = function () {
     window.map.classList.add('map--faded');
     window.adForm.classList.add('ad-form--disabled');
     window.getInputDisabled();
     form.reset();
+    var elements = document.querySelectorAll('.user__pin');
+    window.clearMap = function () {
+      elements.forEach(function (node) {
+        node.parentNode.removeChild(node);
+      });
+    };
+    window.clearMap();
     mainPin.style.left = mainPinPosX + 'px';
     mainPin.style.top = mainPinPosY + 'px';
     inputAddress.value = mainPinX + ', ' + mainPinY;
     window.elementCard.classList.add('hidden');
-
   };
 
   // move main pin
@@ -85,11 +79,12 @@
   var mainPinY = Math.floor(mainPinPosY + mainPinHeight / 2);
   inputAddress.value = mainPinX + ', ' + mainPinY;
 
-  var setCurrentMainPinCoord = function () {
-    var currentMainPinX = Math.floor(mainPinPosX + mainPinWidth / 2);
-    var currentMainPinY = Math.floor(mainPinPosY + mainPinHeight);
+  window.setCurrentMainPinCoord = function () {
+    var currentMainPinX = Math.floor(parseInt(mainPin.style.left, 10) + mainPinWidth / 2);
+    var currentMainPinY = Math.floor(parseInt(mainPin.style.top, 10) + mainPinHeight);
     inputAddress.value = currentMainPinX + ', ' + (currentMainPinY + MAIN_PIN_LEG);
   };
+
 
   mainPin.addEventListener('mousedown', function (evt) {
     evt.preventDefault();
@@ -117,13 +112,13 @@
 
       mainPin.style.top = (mainPin.offsetTop - shift.y) + 'px';
       mainPin.style.left = (mainPin.offsetLeft - shift.x) + 'px';
-      setCurrentMainPinCoord();
+      window.setCurrentMainPinCoord();
     };
 
     var mouseUpHandler = function (upEvt) {
       upEvt.preventDefault();
       getActivePage();
-      setCurrentMainPinCoord();
+      window.setCurrentMainPinCoord();
       document.removeEventListener('mousemove', mouseMoveHandler);
       document.removeEventListener('mouseup', mouseUpHandler);
     };
@@ -136,14 +131,30 @@
 
   // move main pin
 
-
   // close popup
 
   var popupClose = document.querySelector('.popup__close');
 
+  window.popupEscPressHandler = function (evt) {
+    if (evt.keyCode === ESC_KEYCODE) {
+      closePopup();
+    }
+  };
+
+  window.popupEnterPressHandler = function (evt) {
+    if (evt.keyCode === ENTER_KEYCODE) {
+      openPopup();
+    }
+  };
+
   var closePopup = function () {
     window.elementCard.classList.add('hidden');
     document.removeEventListener('keydown', window.popupEscPressHandler);
+  };
+
+  var openPopup = function () {
+    window.elementCard.classList.add('hidden');
+    document.addEventListener('keydown', window.popupEscPressHandler);
   };
 
   popupClose.addEventListener('click', function () {

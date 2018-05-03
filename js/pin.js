@@ -22,6 +22,7 @@
     image.alt = dataCard.offer.title;
     image.style.width = PIN_SIZE + 'px';
     image.style.height = PIN_SIZE + 'px';
+    elementPin.classList.add('user__pin');
     elementPin.appendChild(image);
 
     var pinClickHandler = function (item) {
