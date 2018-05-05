@@ -1,22 +1,13 @@
 'use strict';
 
 (function () {
-  // add disabled attribute to form fields when page is not active
-
-  var adForm = document.querySelector('.ad-form');
-  var fieldsetElements = adForm.getElementsByTagName('fieldset');
-  var fieldsetElem;
-  window.getInputDisabled = function () {
-    for (var k = 0; k < fieldsetElements.length; k++) {
-      fieldsetElem = fieldsetElements[k];
-      fieldsetElem.setAttribute('disabled', 'disabled');
-    }
+  window.form = {
+    adForm: document.querySelector('.ad-form')
   };
-
-  // add disabled attribute to form fields when page is not active
 
   // add submit handler
   var success = document.querySelector('.success');
+
   var showSuccess = function () {
     success.classList.remove('hidden');
   };
@@ -24,38 +15,32 @@
   var hideSuccess = function () {
     setTimeout(function () {
       success.classList.add('hidden');
-    }, 5000);
+    }, 2000);
   };
 
   var formSuccessHandler = function () {
     showSuccess();
-    window.getDeactivePage();
+    window.map.getDeactivePage();
     hideSuccess();
   };
 
-
-  adForm.addEventListener('submit', function (evt) {
-    window.upload(new FormData(adForm), formSuccessHandler, window.errorDataHandler);
+  window.form.adForm.addEventListener('submit', function (evt) {
+    window.upload(new FormData(window.form.adForm), formSuccessHandler, window.errorDataHandler);
     evt.preventDefault();
-
   });
-
   // add submit handler
 
   // reset form handler
-
   var resetForm = document.querySelector('.ad-form__reset');
 
   resetForm.addEventListener('click', function () {
-    window.getDeactivePage();
+    window.map.getDeactivePage();
   });
-
   // reset form handler
 
   // synchronization fields "timein" and "timeout"
-
-  var selectTimeIn = adForm.querySelector('#timein');
-  var selectTimeOut = adForm.querySelector('#timeout');
+  var selectTimeIn = window.form.adForm.querySelector('#timein');
+  var selectTimeOut = window.form.adForm.querySelector('#timeout');
 
   var synchronizeCheckInOut = function (evt) {
     var val = evt.target.value;
@@ -73,14 +58,12 @@
 
   selectTimeIn.addEventListener('change', timeInChangeHandler);
   selectTimeOut.addEventListener('change', timeOutChangeHandler);
-
   // synchronization fields "timein" and "timeout"
 
 
   // synchronization fields "tipe" and "price"
-
-  var selectType = adForm.querySelector('#type');
-  var selectPrice = adForm.querySelector('#price');
+  var selectType = window.form.adForm.querySelector('#type');
+  var selectPrice = window.form.adForm.querySelector('#price');
   selectPrice.placeholder = '0';
   selectType.children[0].removeAttribute('selected');
   selectType.children[1].setAttribute('selected', 'selected');
@@ -102,43 +85,39 @@
   };
 
   selectType.addEventListener('change', typePriceChangeHandler);
-
   // synchronization fields "tipe" and "price"
 
 
   // synchronization fields "room number" and "capacity"
+  var adFormRooms = window.form.adForm.elements.rooms;
+  var adFormCapacity = window.form.adForm.elements.capacity;
 
-  var selectRoomNumber = adForm.querySelector('#room_number');
-  var selectCapacity = adForm.querySelector('#capacity');
-
-  var capacityChangeHandler = function () {
-    var roomNumber = parseInt(selectRoomNumber.value, 10);
-    var capacity = parseInt(selectCapacity.value, 10);
-    if (roomNumber === 1 && capacity !== 1) {
-      selectCapacity.setCustomValidity('1 комната — «для 1 гостя»');
-    } else if (roomNumber === 2 && (selectCapacity === 0 || capacity === 3)) {
-      selectCapacity.setCustomValidity(
-          '2 комнаты — «для 1 или 2 гостей'
+  var syncRoomAndCapacity = function () {
+    var selectRoom = parseInt(adFormRooms.value, 10);
+    var selectCapacity = parseInt(adFormCapacity.value, 10);
+    if (selectRoom === 1 && selectCapacity !== 1) {
+      adFormCapacity.setCustomValidity('1 комната — «для 1 гостя»');
+    } else if (selectRoom === 2 && (selectCapacity === 0 || selectCapacity === 3)) {
+      adFormCapacity.setCustomValidity(
+          '2 комнаты — для 1 или 2 гостей'
       );
-    } else if (roomNumber === 3 && capacity === 0) {
-      selectCapacity.setCustomValidity(
+    } else if (selectRoom === 3 && selectCapacity === 0) {
+      adFormCapacity.setCustomValidity(
           '3 комнаты — «для 1-го, 2-x или 3-x гостей»'
       );
-    } else if (roomNumber === 100 && capacity !== 0) {
-      selectCapacity.setCustomValidity('100 комнат — «не для гостей»');
+    } else if (selectRoom === 100 && selectCapacity !== 0) {
+      adFormCapacity.setCustomValidity('100 комнат — «не для гостей»');
     } else {
-      selectCapacity.setCustomValidity('');
+      adFormCapacity.setCustomValidity('');
     }
   };
 
-  selectRoomNumber.addEventListener('change', capacityChangeHandler);
-
+  var changeRoomsAndCapacity = function () {
+    adFormRooms.addEventListener('change', syncRoomAndCapacity);
+    adFormCapacity.addEventListener('change', syncRoomAndCapacity);
+  };
+  syncRoomAndCapacity();
+  changeRoomsAndCapacity();
   // synchronization fields "room number" and "capacity"
 
-
-  window.adForm = adForm;
-  window.fieldsetElem = fieldsetElem;
-  window.fieldsetElements = fieldsetElements;
-  window.selectRoomNumber = selectRoomNumber;
-  window.selectCapacity = selectCapacity;
 })();

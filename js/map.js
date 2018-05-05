@@ -6,66 +6,70 @@
   var MAIN_PIN_LEG = 22;
 
   var fragmentPin;
-
-  window.renderPins = function () {
-    fragmentPin = document.createDocumentFragment();
-    for (var i = 0; i < window.ads.length; i++) {
-      fragmentPin.appendChild(window.makePin(window.ads[i]));
-    }
-    window.mapPins.appendChild(fragmentPin);
-  };
-
-  var successLoadHandler = function (data) {
-    window.ads = data;
-    window.renderPins(data);
-  };
-
-  // window.load(successLoadHandler, window.errorDataHandler);
-
-  window.mapPins = document.querySelector('.map__pins');
   var inputAddress = document.getElementById('address');
   var mainPin = document.querySelector('.map__pin--main');
   var mainPinWidth = mainPin.querySelector('img').width;
   var mainPinHeight = mainPin.querySelector('img').height;
   var mapWidth = document.querySelector('.map__overlay').clientWidth;
   var mapHeight = document.querySelector('.map__overlay').clientHeight;
-
-
-  var getActivePage = function () {
-    window.map.classList.remove('map--faded');
-    window.adForm.classList.remove('ad-form--disabled');
-    for (var k = 0; k < window.fieldsetElements.length; k++) {
-      window.fieldsetElem = window.fieldsetElements[k];
-      window.fieldsetElem.removeAttribute('disabled');
-    }
-    window.load(successLoadHandler, window.errorDataHandler);
-    window.selectRoomNumber.children[0].selected = true;
-    window.selectCapacity.children[0].selected = false;
-  };
-
+  var fieldsetElements = window.form.adForm.querySelectorAll('.ad-form fieldset');
   var form = document.querySelector('.notice form');
 
+  window.map = {
+    renderPins: function () {
+      fragmentPin = document.createDocumentFragment();
+      for (var i = 0; i < window.ads.length; i++) {
+        fragmentPin.appendChild(window.pin.makePin(window.ads[i]));
+      }
+      window.map.mapPins.appendChild(fragmentPin);
+    },
 
-  window.getDeactivePage = function () {
-    window.map.classList.add('map--faded');
-    window.adForm.classList.add('ad-form--disabled');
-    window.getInputDisabled();
-    form.reset();
-    var elements = document.querySelectorAll('.user__pin');
-    window.clearMap = function () {
+    // function for deactivate page
+    getDeactivePage: function () {
+      window.pin.mapElement.classList.add('map--faded');
+      window.form.adForm.classList.add('ad-form--disabled');
+      fieldsetElements.forEach(function (item) {
+        item.setAttribute('disabled', true);
+      });
+      form.reset();
+      var elements = document.querySelectorAll('.user__pin');
       elements.forEach(function (node) {
         node.parentNode.removeChild(node);
       });
-    };
-    window.clearMap();
-    mainPin.style.left = mainPinPosX + 'px';
-    mainPin.style.top = mainPinPosY + 'px';
-    inputAddress.value = mainPinX + ', ' + mainPinY;
-    window.elementCard.classList.add('hidden');
+      mainPin.style.left = mainPinPosX + 'px';
+      mainPin.style.top = mainPinPosY + 'px';
+      inputAddress.value = mainPinX + ', ' + mainPinY;
+      window.elementCard.classList.add('hidden');
+    },
+    // function for deactivate page
+
+    mapPins: document.querySelector('.map__pins')
   };
 
-  // move main pin
+  window.ads = [];
+  var successLoadHandler = function (data) {
+    window.ads = data;
+    window.map.renderPins(window.ads);
+  };
 
+  // activate fieldsets fieldsetElements
+  var getActiveFieldsets = function () {
+    window.form.adForm.classList.remove('ad-form--disabled');
+    fieldsetElements.forEach(function (item) {
+      item.removeAttribute('disabled');
+    });
+  };
+  // activate fieldsets fieldsetElements
+
+  // function for activate page
+  var getActivePage = function () {
+    window.pin.mapElement.classList.remove('map--faded');
+    getActiveFieldsets();
+    window.load(successLoadHandler, window.errorDataHandler);
+  };
+  // function for activate page
+
+  // move main pin
   var limitMainPinMove = function (left, top) {
     if ((left < 0) || (top < 0) || (left + mainPinWidth > mapWidth) || (top + mainPinHeight > mapHeight)) {
       return true;
@@ -128,11 +132,9 @@
 
 
   });
-
   // move main pin
 
   // close popup
-
   var popupClose = document.querySelector('.popup__close');
 
   window.popupEscPressHandler = function (evt) {
@@ -160,8 +162,8 @@
   popupClose.addEventListener('click', function () {
     closePopup();
   });
-
   // close popup
+
   window.fragmentPin = fragmentPin;
 
 })();
