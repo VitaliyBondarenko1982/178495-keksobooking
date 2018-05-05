@@ -54,10 +54,10 @@
   };
 
   var changeFeatures = function (it) {
-    window.filter.housingFeatures = window.mapFilter.querySelectorAll('.map__checkbox');
+    var housingFeatures = window.mapFilter.querySelectorAll('.map__checkbox');
 
-    for (var i = 0; i < window.filter.housingFeatures.length; i++) {
-      if (window.filter.housingFeatures[i].checked && it.offer.features.indexOf(window.filter.housingFeatures[i].value) < 0) {
+    for (var i = 0; i < housingFeatures.length; i++) {
+      if (housingFeatures[i].checked && it.offer.features.indexOf(housingFeatures[i].value) < 0) {
         return false;
       }
     }
