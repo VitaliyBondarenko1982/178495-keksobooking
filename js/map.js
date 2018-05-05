@@ -16,10 +16,11 @@
   var form = document.querySelector('.notice form');
 
   window.map = {
-    renderPins: function () {
+    renderPins: function (data, arr) {
+      var pinsArr = data.length >= arr ? arr : data.length;
       fragmentPin = document.createDocumentFragment();
-      for (var i = 0; i < window.ads.length; i++) {
-        fragmentPin.appendChild(window.pin.makePin(window.ads[i]));
+      for (var i = 0; i < pinsArr; i++) {
+        fragmentPin.appendChild(window.pin.makePin(data[i]));
       }
       window.map.mapPins.appendChild(fragmentPin);
     },
@@ -49,7 +50,7 @@
   window.ads = [];
   var successLoadHandler = function (data) {
     window.ads = data;
-    window.map.renderPins(window.ads);
+    window.map.renderPins(window.ads, 5);
   };
 
   // activate fieldsets fieldsetElements

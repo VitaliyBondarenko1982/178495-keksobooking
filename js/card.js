@@ -2,10 +2,9 @@
 
 (function () {
   var mapCardTemplate = document.querySelector('template').content.querySelector('.map__card');
-  var mapFilter = document.querySelector('.map__filters-container');
-
   window.elementCard = mapCardTemplate.cloneNode(true);
-  mapFilter.before(window.elementCard);
+  window.mapFilter = document.querySelector('.map__filters-container');
+  window.mapFilter.before(window.elementCard);
   window.elementCard.classList.add('hidden');
 
   var transformType = function (type) {
