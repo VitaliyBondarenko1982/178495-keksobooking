@@ -4,6 +4,8 @@
   var ESC_KEYCODE = 27;
   var ENTER_KEYCODE = 13;
   var MAIN_PIN_LEG = 22;
+  var MIN_MAIN_PIN_Y = 150;
+  var MAX_MAIN_PIN_Y = 500;
 
   var fragmentPin;
   var inputAddress = document.getElementById('address');
@@ -11,7 +13,6 @@
   var mainPinWidth = mainPin.querySelector('img').width;
   var mainPinHeight = mainPin.querySelector('img').height;
   var mapWidth = document.querySelector('.map__overlay').clientWidth;
-  var mapHeight = document.querySelector('.map__overlay').clientHeight;
   var fieldsetElements = window.form.adForm.querySelectorAll('.ad-form fieldset');
   var form = document.querySelector('.notice form');
 
@@ -66,13 +67,14 @@
   var getActivePage = function () {
     window.pin.mapElement.classList.remove('map--faded');
     getActiveFieldsets();
+    inputAddress.setAttribute('disabled', true);
     window.load(successLoadHandler, window.errorDataHandler);
   };
   // function for activate page
 
   // move main pin
   var limitMainPinMove = function (left, top) {
-    if ((left < 0) || (top < 0) || (left + mainPinWidth > mapWidth) || (top + mainPinHeight > mapHeight)) {
+    if ((left < 0) || (top < MIN_MAIN_PIN_Y - mainPinHeight - MAIN_PIN_LEG) || (left + mainPinWidth > mapWidth) || (top + mainPinHeight + MAIN_PIN_LEG > MAX_MAIN_PIN_Y)) {
       return true;
     }
     return false;
