@@ -34,6 +34,7 @@
         item.setAttribute('disabled', true);
       });
       form.reset();
+      mainPin.addEventListener('mousedown', mainPinFirstMoveHandler);
       var elements = document.querySelectorAll('.user__pin');
       elements.forEach(function (node) {
         node.parentNode.removeChild(node);
@@ -49,12 +50,6 @@
   };
 
   window.ads = [];
-  var successLoadHandler = function (data) {
-    window.ads = data;
-    window.map.renderPins(window.ads, 5);
-
-  };
-
 
   // activate fieldsets fieldsetElements
   var getActiveFieldsets = function () {
@@ -69,14 +64,21 @@
   var getActivePage = function () {
     window.pin.mapElement.classList.remove('map--faded');
     getActiveFieldsets();
-    var elementss = document.querySelectorAll('.user__pin');
-    elementss.forEach(function (node) {
-      node.parentNode.removeChild(node);
-    });
+    var successLoadHandler = function (data) {
+      window.ads = data;
+      window.map.renderPins(window.ads, 5);
+    };
     window.load(successLoadHandler, window.errorDataHandler);
-    window.filterChangeHandler();
+
+    mainPin.removeEventListener('mousedown', mainPinFirstMoveHandler);
+    mainPin.addEventListener('mousedown', mainPinMoveHandler);
   };
-  // function for activate page
+
+  var mainPinFirstMoveHandler = function () {
+    getActivePage();
+  };
+
+  mainPin.addEventListener('mousedown', mainPinFirstMoveHandler);
 
   // move main pin
   var limitMainPinMove = function (left, top) {
@@ -99,7 +101,7 @@
   };
 
 
-  mainPin.addEventListener('mousedown', function (evt) {
+  var mainPinMoveHandler = function (evt) {
     evt.preventDefault();
 
     var startCoords = {
@@ -130,7 +132,7 @@
 
     var mouseUpHandler = function (upEvt) {
       upEvt.preventDefault();
-      getActivePage();
+      mouseMoveHandler(upEvt);
       window.setCurrentMainPinCoord();
       document.removeEventListener('mousemove', mouseMoveHandler);
       document.removeEventListener('mouseup', mouseUpHandler);
@@ -139,8 +141,8 @@
     document.addEventListener('mousemove', mouseMoveHandler);
     document.addEventListener('mouseup', mouseUpHandler);
 
-
-  });
+  };
+  mainPin.addEventListener('mousedown', mainPinMoveHandler);
   // move main pin
 
   // close popup
