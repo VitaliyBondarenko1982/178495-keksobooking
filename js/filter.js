@@ -64,7 +64,7 @@
     return true;
   };
 
-  var filteredAds = function () {
+  window.filteredAds = function () {
     var newAdsArr = window.ads.slice();
     var sameAds = newAdsArr.filter(changeType).filter(changePrice).filter(changeRooms).filter(changeGuests).filter(changeFeatures);
     var pins = document.querySelectorAll('.user__pin');
@@ -75,10 +75,10 @@
     window.map.renderPins(sameAds, 5);
   };
 
-  var filterChangeHandler = function () {
-    window.utils.debounce(filteredAds, window.utils.DEBOUNCE_INTERVAL);
+  window.filterChangeHandler = function () {
+    window.utils.debounce(window.filteredAds, window.utils.DEBOUNCE_INTERVAL);
   };
 
-  window.mapFilter.addEventListener('change', filterChangeHandler);
+  window.mapFilter.addEventListener('change', window.filterChangeHandler);
 
 })();

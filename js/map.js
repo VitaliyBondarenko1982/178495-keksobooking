@@ -52,7 +52,9 @@
   var successLoadHandler = function (data) {
     window.ads = data;
     window.map.renderPins(window.ads, 5);
+
   };
+
 
   // activate fieldsets fieldsetElements
   var getActiveFieldsets = function () {
@@ -67,8 +69,12 @@
   var getActivePage = function () {
     window.pin.mapElement.classList.remove('map--faded');
     getActiveFieldsets();
-    inputAddress.setAttribute('disabled', true);
+    var elementss = document.querySelectorAll('.user__pin');
+    elementss.forEach(function (node) {
+      node.parentNode.removeChild(node);
+    });
     window.load(successLoadHandler, window.errorDataHandler);
+    window.filterChangeHandler();
   };
   // function for activate page
 
@@ -87,9 +93,9 @@
   inputAddress.value = mainPinX + ', ' + mainPinY;
 
   window.setCurrentMainPinCoord = function () {
-    var currentMainPinX = Math.floor(parseInt(mainPin.style.left, 10) + mainPinWidth / 2);
-    var currentMainPinY = Math.floor(parseInt(mainPin.style.top, 10) + mainPinHeight);
-    inputAddress.value = currentMainPinX + ', ' + (currentMainPinY + MAIN_PIN_LEG);
+    window.currentMainPinX = Math.floor(parseInt(mainPin.style.left, 10) + mainPinWidth / 2);
+    window.currentMainPinY = Math.floor(parseInt(mainPin.style.top, 10) + mainPinHeight);
+    inputAddress.value = window.currentMainPinX + ', ' + (window.currentMainPinY + MAIN_PIN_LEG);
   };
 
 
@@ -168,5 +174,9 @@
   // close popup
 
   window.fragmentPin = fragmentPin;
+  window.inputAddress = inputAddress;
+  // window.currentMainPinX = currentMainPinX;
+  // window.currentMainPinY = currentMainPinY;
+  window.MAIN_PIN_LEG = MAIN_PIN_LEG;
 
 })();
