@@ -34,7 +34,7 @@
         item.setAttribute('disabled', true);
       });
       form.reset();
-      mainPin.addEventListener('mousedown', mainPinFirstMoveHandler);
+      mainPin.addEventListener('mouseup', mainPinFirstMoveHandler);
       var elements = document.querySelectorAll('.user__pin');
       elements.forEach(function (node) {
         node.parentNode.removeChild(node);
@@ -70,15 +70,14 @@
     };
     window.load(successLoadHandler, window.errorDataHandler);
 
-    mainPin.removeEventListener('mousedown', mainPinFirstMoveHandler);
-    mainPin.addEventListener('mousedown', mainPinMoveHandler);
+    mainPin.removeEventListener('mouseup', mainPinFirstMoveHandler);
   };
 
   var mainPinFirstMoveHandler = function () {
     getActivePage();
   };
 
-  mainPin.addEventListener('mousedown', mainPinFirstMoveHandler);
+  mainPin.addEventListener('mouseup', mainPinFirstMoveHandler);
 
   // move main pin
   var limitMainPinMove = function (left, top) {
