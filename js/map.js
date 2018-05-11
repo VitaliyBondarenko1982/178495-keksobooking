@@ -68,7 +68,7 @@
       window.ads = data;
       window.map.renderPins(window.ads, 5);
     };
-    window.load(successLoadHandler, window.errorDataHandler);
+    window.backend.load(successLoadHandler, window.errorDataHandler);
 
     mainPin.removeEventListener('mouseup', mainPinFirstMoveHandler);
   };

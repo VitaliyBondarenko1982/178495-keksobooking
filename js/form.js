@@ -25,7 +25,7 @@
   };
 
   window.form.adForm.addEventListener('submit', function (evt) {
-    window.upload(new FormData(window.form.adForm), formSuccessHandler, window.errorDataHandler);
+    window.backend.upload(new FormData(window.form.adForm), formSuccessHandler, window.errorDataHandler);
     evt.preventDefault();
   });
   // add submit handler
